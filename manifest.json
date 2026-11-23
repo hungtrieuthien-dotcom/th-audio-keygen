@@ -1,0 +1,25 @@
+{
+  "name": "TH AUDIO KeyGen Pro",
+  "short_name": "TH KeyGen",
+  "description": "Công cụ tạo Key bản quyền Ed25519 theo Mã Thiết Bị cho Tune AI Pro - TH AUDIO (Hoạt động 100% Offline)",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0F1016",
+  "theme_color": "#0F1016",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
