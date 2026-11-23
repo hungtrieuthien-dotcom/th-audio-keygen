@@ -235,16 +235,24 @@
           Master Key được mã hóa bằng mã PIN và chỉ lưu cục bộ trên máy này. Không bao giờ gửi lên mạng.
         </p>
       </div>
-      <div id="qrBanner" class="hidden" style="background:rgba(34,197,94,0.14);border:1px solid rgba(34,197,94,0.45);border-radius:11px;padding:10px 12px;margin-bottom:14px;font-size:12.5px;color:#86EFAC;font-weight:600;">
-        ✅ Đã nạp Master Key hợp lệ từ mã QR! Hãy đặt mã PIN (4-8 số) để khóa an toàn trên iPhone này.
+      <div id="qrBanner" class="hidden" style="background:rgba(34,197,94,0.14);border:1.5px solid rgba(34,197,94,0.5);border-radius:13px;padding:13px;margin-bottom:14px;font-size:12.5px;color:#BBF7D0;line-height:1.45;">
+        <div style="font-weight:800;font-size:13.5px;color:#4ADE80;margin-bottom:6px;">✅ Đã nhận Master Key hợp lệ từ mã QR!</div>
+        <div style="margin-bottom:10px;">
+          • <strong>Nếu đã cài icon TH KeyGen ra Màn hình chính:</strong> Bấm nút vàng bên dưới để Copy, rồi mở icon <strong>TH KeyGen</strong> ngoài Màn hình chính và bấm <strong>📋 Dán</strong>.<br />
+          • <strong>Nếu muốn dùng luôn trên Safari:</strong> Chỉ cần đặt mã PIN bên dưới rồi bấm Lưu.
+        </div>
+        <button type="button" class="btn btn-gold" id="btnCopyImportedSeed" style="padding:12px 14px;font-size:13.5px;">📋 COPY MASTER SEED (ĐỂ DÁN VÀO APP MH CHÍNH)</button>
       </div>
       <div style="margin-bottom:12px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:6px;flex-wrap:wrap;">
           <label class="lbl" for="setupSeed" style="margin:0;">Master Seed (64 ký tự Hex)</label>
-          <label for="setupSeedFile" style="font-size:11.5px;font-weight:700;color:var(--gold2);cursor:pointer;background:var(--gold-dim);border:1px solid rgba(229,185,92,0.4);padding:3px 9px;border-radius:8px;">📂 Chọn file .key</label>
+          <div style="display:flex;gap:6px;">
+            <button type="button" id="btnPasteSeed" style="font-size:11.5px;font-weight:700;color:var(--gold2);cursor:pointer;background:var(--gold-dim);border:1px solid rgba(229,185,92,0.45);padding:4px 10px;border-radius:8px;">📋 Dán</button>
+            <label for="setupSeedFile" style="font-size:11.5px;font-weight:700;color:var(--gold2);cursor:pointer;background:var(--gold-dim);border:1px solid rgba(229,185,92,0.45);padding:4px 10px;border-radius:8px;">📂 Chọn file .key</label>
+          </div>
           <input type="file" id="setupSeedFile" accept=".key,.txt" class="hidden" />
         </div>
-        <textarea id="setupSeed" rows="2" class="mono" placeholder="Dán 64 ký tự từ file master_seed.key hoặc chọn file .key..." autocomplete="off" spellcheck="false"></textarea>
+        <textarea id="setupSeed" rows="2" class="mono" placeholder="Dán 64 ký tự Master Seed hoặc chọn file master_seed.key..." autocomplete="off" spellcheck="false"></textarea>
         <div class="status-line" id="setupSeedStatus"></div>
       </div>
       <div class="row-2" style="margin-bottom:14px;">
@@ -552,6 +560,29 @@
       }
 
       /* ---- Setup screen events ---- */
+      $('btnCopyImportedSeed').addEventListener('click', async () => {
+        const val = $('setupSeed').value.trim();
+        if (!val) return;
+        const ok = await copyText(val);
+        showToast(ok ? '✅ Đã Copy! Hãy mở icon TH KeyGen ngoài MH chính rồi bấm Dán.' : '⚠️ Hãy chạm giữ ô Master Seed bên dưới để Sao chép.');
+      });
+
+      $('btnPasteSeed').addEventListener('click', async () => {
+        try {
+          const txt = await navigator.clipboard.readText();
+          if (txt) {
+            const m = txt.match(/[0-9a-fA-F]{64}/);
+            $('setupSeed').value = m ? m[0].toUpperCase() : txt.trim();
+            $('setupSeed').dispatchEvent(new Event('input'));
+            $('setupPin1').focus();
+            showToast('📋 Đã dán Master Seed!');
+          }
+        } catch (e) {
+          $('setupSeed').focus();
+          showToast('👉 Chạm giữ vào ô Master Seed rồi chọn Dán');
+        }
+      });
+
       $('setupSeedFile').addEventListener('change', (e) => {
         const f = e.target.files && e.target.files[0];
         if (!f) return;
