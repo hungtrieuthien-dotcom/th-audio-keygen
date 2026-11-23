@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0F1016" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="TH KeyGen" />
+  <title>TH AUDIO — KeyGen Pro</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+  <link rel="icon" type="image/png" href="./icon-192.png" />
+  <style>
+    :root {
+      --bg: #0D0E14;
+      --card: #161822;
+      --card2: #1D202E;
+      --border: #2D3145;
+      --gold: #E5B95C;
+      --gold2: #FFD777;
+      --gold-dim: rgba(229, 185, 92, 0.16);
+      --text: #F4F4F8;
+      --muted: #98A0B8;
+      --green: #22C55E;
+      --red: #F43F5E;
+      --purple: #C084FC;
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body {
+      margin: 0; padding: 0;
+      background: radial-gradient(120% 80% at 50% 0%, #1C1E2B 0%, var(--bg) 62%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
+    .app {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: calc(env(safe-area-inset-top, 12px) + 12px) 16px calc(env(safe-area-inset-bottom, 16px) + 28px);
+    }
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px; margin-bottom: 16px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand-logo {
+      width: 40px; height: 40px; border-radius: 12px;
+      border: 1.5px solid rgba(229, 185, 92, 0.55);
+      background: #101016; object-fit: cover;
+      box-shadow: 0 4px 14px rgba(229, 185, 92, 0.2);
+    }
+    .brand-title { font-size: 16px; font-weight: 800; letter-spacing: 0.4px; color: var(--gold2); line-height: 1.15; }
+    .brand-sub { font-size: 11px; color: var(--muted); }
+    .top-actions { display: flex; align-items: center; gap: 6px; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 5px 10px; border-radius: 999px;
+      font-size: 11px; font-weight: 700;
+      background: rgba(34, 197, 94, 0.14); color: #4ADE80;
+      border: 1px solid rgba(34, 197, 94, 0.35);
+    }
+    .icon-btn {
+      background: var(--card2); color: var(--text);
+      border: 1px solid var(--border); border-radius: 10px;
+      height: 34px; padding: 0 10px; font-size: 13px; font-weight: 600;
+      cursor: pointer; display: inline-flex; align-items: center; gap: 4px;
+    }
+    .icon-btn:active { transform: scale(0.96); }
+    .card {
+      background: linear-gradient(180deg, rgba(28, 31, 44, 0.96), rgba(20, 22, 31, 0.98));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      margin-bottom: 14px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+    }
+    .card-gold { border-color: rgba(229, 185, 92, 0.42); }
+    .card-title {
+      font-size: 13px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.6px; color: var(--gold); margin: 0 0 12px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    label.lbl {
+      display: block; font-size: 12px; font-weight: 600;
+      color: var(--muted); margin-bottom: 6px;
+    }
+    .input-row { display: flex; gap: 8px; align-items: stretch; }
+    input[type="text"], input[type="password"], textarea {
+      width: 100%; background: #10121A; color: var(--text);
+      border: 1.5px solid var(--border); border-radius: 12px;
+      padding: 12px 14px; font-size: 15px; outline: none;
+      font-family: inherit; transition: border-color 0.15s;
+    }
+    input:focus, textarea:focus { border-color: var(--gold); }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace !important; letter-spacing: 0.5px; }
+    .btn {
+      width: 100%; border: none; border-radius: 13px;
+      padding: 14px 16px; font-size: 15px; font-weight: 800;
+      cursor: pointer; transition: transform 0.12s, filter 0.15s;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-gold {
+      background: linear-gradient(135deg, #F3CE74 0%, #D9A238 100%);
+      color: #16120A;
+      box-shadow: 0 8px 22px rgba(229, 185, 92, 0.32);
+    }
+    .btn-sec {
+      background: var(--card2); color: var(--text);
+      border: 1px solid var(--border); padding: 11px 14px; font-size: 13px; font-weight: 700;
+    }
+    .btn-green {
+      background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+      color: #FFFFFF; padding: 12px 14px; font-size: 13px; font-weight: 800;
+    }
+    .btn-danger {
+      background: rgba(244, 63, 94, 0.14); color: #FB7185;
+      border: 1px solid rgba(244, 63, 94, 0.35); padding: 11px 14px; font-size: 13px; font-weight: 700;
+    }
+    .btn-mini {
+      flex-shrink: 0; width: auto; padding: 0 13px; border-radius: 12px;
+      background: var(--gold-dim); color: var(--gold2);
+      border: 1px solid rgba(229, 185, 92, 0.42); font-size: 13px; font-weight: 700; cursor: pointer;
+    }
+    .btn-mini:active { transform: scale(0.95); }
+    .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+    .tier-btn {
+      background: #12141E; border: 1.5px solid var(--border); border-radius: 13px;
+      padding: 12px 6px; text-align: center; cursor: pointer; color: var(--muted);
+      transition: all 0.15s;
+    }
+    .tier-btn .t-ico { font-size: 20px; display: block; margin-bottom: 3px; }
+    .tier-btn .t-name { font-size: 13px; font-weight: 800; display: block; color: var(--text); }
+    .tier-btn .t-code { font-size: 10px; opacity: 0.75; display: block; margin-top: 2px; }
+    .tier-btn.active {
+      background: linear-gradient(180deg, rgba(229, 185, 92, 0.22), rgba(229, 185, 92, 0.08));
+      border-color: var(--gold2); color: var(--gold2);
+      box-shadow: 0 0 0 1px rgba(255, 215, 119, 0.3) inset;
+    }
+    .tier-btn.active .t-name { color: var(--gold2); }
+    .status-line { font-size: 12px; margin-top: 6px; min-height: 18px; font-weight: 600; }
+    .ok { color: #4ADE80; }
+    .err { color: #FB7185; }
+    .warn { color: #FBBF24; }
+    .key-box {
+      background: #0B0C11; border: 1.5px dashed rgba(229, 185, 92, 0.55);
+      border-radius: 12px; padding: 12px; font-size: 13px; line-height: 1.45;
+      color: var(--gold2); word-break: break-all; user-select: all; -webkit-user-select: all;
+      margin: 10px 0 12px;
+    }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .ios-tip {
+      background: linear-gradient(135deg, rgba(229, 185, 92, 0.16), rgba(229, 185, 92, 0.05));
+      border: 1px solid rgba(229, 185, 92, 0.42); border-radius: 14px;
+      padding: 12px 14px; margin-bottom: 14px; font-size: 12.5px; line-height: 1.45;
+      color: #F6E6B8; display: none;
+    }
+    .ios-tip strong { color: var(--gold2); }
+    .hist-item {
+      background: #11131C; border: 1px solid var(--border); border-radius: 12px;
+      padding: 11px 12px; margin-bottom: 8px;
+    }
+    .hist-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+    .badge {
+      display: inline-block; padding: 2px 8px; border-radius: 999px;
+      font-size: 10.5px; font-weight: 800; letter-spacing: 0.3px;
+    }
+    .b-LT { background: rgba(229, 185, 92, 0.22); color: var(--gold2); }
+    .b-1Y { background: rgba(56, 189, 248, 0.2); color: #7DD3FC; }
+    .b-6M { background: rgba(192, 132, 252, 0.2); color: #D8B4FE; }
+    .hist-hw { font-size: 13px; font-weight: 700; color: var(--text); }
+    .hist-meta { font-size: 11.5px; color: var(--muted); margin-bottom: 6px; }
+    .hist-key { font-size: 11px; color: var(--gold); word-break: break-all; opacity: 0.9; margin-bottom: 8px; }
+    .hist-btns { display: flex; gap: 6px; }
+    .hist-btns button {
+      flex: 1; padding: 7px 8px; border-radius: 9px; font-size: 12px; font-weight: 700;
+      border: 1px solid var(--border); background: var(--card2); color: var(--text); cursor: pointer;
+    }
+    .hidden { display: none !important; }
+    .center { text-align: center; }
+    .lock-icon {
+      width: 66px; height: 66px; border-radius: 20px; margin: 4px auto 14px;
+      background: linear-gradient(135deg, rgba(229, 185, 92, 0.22), rgba(229, 185, 92, 0.05));
+      border: 1.5px solid rgba(229, 185, 92, 0.5);
+      display: flex; align-items: center; justify-content: center; font-size: 30px;
+    }
+    .toast {
+      position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom, 12px) + 22px);
+      transform: translateX(-50%) translateY(20px);
+      background: #1E293B; color: #F8FAFC; border: 1px solid rgba(229, 185, 92, 0.6);
+      padding: 11px 18px; border-radius: 999px; font-size: 13px; font-weight: 700;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55); opacity: 0; pointer-events: none;
+      transition: all 0.22s; z-index: 999; max-width: 90vw; text-align: center;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .modal-bg {
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.72);
+      display: flex; align-items: center; justify-content: center; padding: 18px; z-index: 900;
+    }
+    .modal { width: 100%; max-width: 440px; }
+    .foot { text-align: center; font-size: 11px; color: var(--muted); opacity: 0.75; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="topbar">
+      <div class="brand">
+        <img class="brand-logo" src="./icon-192.png" alt="TH" onerror="this.style.display='none'" />
+        <div>
+          <div class="brand-title">TH AUDIO KEYGEN</div>
+          <div class="brand-sub">Tune AI Pro • Ed25519 Hardware Lock</div>
+        </div>
+      </div>
+      <div class="top-actions">
+        <span class="pill" id="offlinePill">● Offline OK</span>
+        <button class="icon-btn hidden" id="btnLock" title="Khóa ngay">🔒</button>
+        <button class="icon-btn hidden" id="btnSettings" title="Cài đặt">⚙️</button>
+      </div>
+    </div>
+
+    <div class="ios-tip" id="iosTip">
+      📲 <strong>Thêm ra Màn hình chính iPhone (dùng 100% không cần mạng):</strong><br />
+      Bấm nút <strong>Chia sẻ (⬆️)</strong> ở thanh dưới Safari → chọn <strong>"Thêm vào MH chính"</strong> → bấm <strong>Thêm</strong>.
+    </div>
+
+    <!-- SCREEN 1: FIRST-TIME SETUP -->
+    <div class="card card-gold hidden" id="viewSetup">
+      <div class="center">
+        <div class="lock-icon">🔑</div>
+        <h2 style="margin:0 0 6px;font-size:19px;color:var(--gold2);">Thiết Lập Master Key Lần Đầu</h2>
+        <p style="margin:0 0 16px;font-size:13px;color:var(--muted);line-height:1.45;">
+          Master Key được mã hóa bằng mã PIN và chỉ lưu cục bộ trên máy này. Không bao giờ gửi lên mạng.
+        </p>
+      </div>
+      <div id="qrBanner" class="hidden" style="background:rgba(34,197,94,0.14);border:1px solid rgba(34,197,94,0.45);border-radius:11px;padding:10px 12px;margin-bottom:14px;font-size:12.5px;color:#86EFAC;font-weight:600;">
+        ✅ Đã nạp Master Key hợp lệ từ mã QR! Hãy đặt mã PIN (4-8 số) để khóa an toàn trên iPhone này.
+      </div>
+      <div style="margin-bottom:12px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+          <label class="lbl" for="setupSeed" style="margin:0;">Master Seed (64 ký tự Hex)</label>
+          <label for="setupSeedFile" style="font-size:11.5px;font-weight:700;color:var(--gold2);cursor:pointer;background:var(--gold-dim);border:1px solid rgba(229,185,92,0.4);padding:3px 9px;border-radius:8px;">📂 Chọn file .key</label>
+          <input type="file" id="setupSeedFile" accept=".key,.txt" class="hidden" />
+        </div>
+        <textarea id="setupSeed" rows="2" class="mono" placeholder="Dán 64 ký tự từ file master_seed.key hoặc chọn file .key..." autocomplete="off" spellcheck="false"></textarea>
+        <div class="status-line" id="setupSeedStatus"></div>
+      </div>
+      <div class="row-2" style="margin-bottom:14px;">
+        <div>
+          <label class="lbl" for="setupPin1">Đặt mã PIN (4-8 số)</label>
+          <input type="password" id="setupPin1" inputmode="numeric" maxlength="8" placeholder="VD: 2708" autocomplete="new-password" />
+        </div>
+        <div>
+          <label class="lbl" for="setupPin2">Nhập lại mã PIN</label>
+          <input type="password" id="setupPin2" inputmode="numeric" maxlength="8" placeholder="Nhập lại PIN" autocomplete="new-password" />
+        </div>
+      </div>
+      <button class="btn btn-gold" id="btnSaveSetup">🔐 Lưu Khóa & Bắt Đầu Tạo Key</button>
+    </div>
+
+    <!-- SCREEN 2: PIN UNLOCK -->
+    <div class="card card-gold hidden" id="viewUnlock">
+      <div class="center">
+        <div class="lock-icon">🛡️</div>
+        <h2 style="margin:0 0 6px;font-size:19px;color:var(--gold2);">Mở Khóa TH AUDIO KeyGen</h2>
+        <p style="margin:0 0 18px;font-size:13px;color:var(--muted);">Nhập mã PIN cá nhân để giải mã Master Key cục bộ</p>
+      </div>
+      <div style="margin-bottom:12px;">
+        <input type="password" id="unlockPin" inputmode="numeric" maxlength="8" placeholder="Nhập mã PIN..." style="text-align:center;font-size:22px;letter-spacing:8px;font-weight:800;" autocomplete="current-password" />
+        <div class="status-line center" id="unlockStatus"></div>
+      </div>
+      <button class="btn btn-gold" id="btnUnlock">🔓 Mở Khóa</button>
+      <div class="center" style="margin-top:14px;">
+        <button id="btnForgotPin" style="background:none;border:none;color:var(--muted);font-size:12px;text-decoration:underline;cursor:pointer;">
+          Quên PIN? Nhập lại Master Seed mới
+        </button>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: MAIN KEYGEN WORKSPACE -->
+    <div class="hidden" id="viewMain">
+      <div class="card card-gold">
+        <div class="card-title">
+          <span>⚡ Tạo Key Theo Mã Thiết Bị</span>
+          <span style="font-size:11px;color:#4ADE80;font-weight:700;">Ed25519 Verified</span>
+        </div>
+
+        <div style="margin-bottom:14px;">
+          <label class="lbl" for="inpHwid">1. Mã Thiết Bị của khách (có thể dán nguyên tin nhắn Zalo)</label>
+          <div class="input-row">
+            <input type="text" id="inpHwid" class="mono" placeholder="TH-XXXX-XXXX-XXXX" autocomplete="off" spellcheck="false" />
+            <button class="btn-mini" id="btnPasteHwid" type="button">📋 Dán</button>
+            <button class="btn-mini" id="btnClearHwid" type="button" style="padding:0 11px;">✕</button>
+          </div>
+          <div class="status-line" id="hwidStatus"></div>
+        </div>
+
+        <label class="lbl">2. Chọn gói bản quyền</label>
+        <div class="tiers" id="tierGroup">
+          <button type="button" class="tier-btn active" data-tier="LT">
+            <span class="t-ico">👑</span>
+            <span class="t-name">Vĩnh Viễn</span>
+            <span class="t-code">THLT-***</span>
+          </button>
+          <button type="button" class="tier-btn" data-tier="1Y">
+            <span class="t-ico">⭐</span>
+            <span class="t-name">1 Năm</span>
+            <span class="t-code">TH1Y-***</span>
+          </button>
+          <button type="button" class="tier-btn" data-tier="6M">
+            <span class="t-ico">🟣</span>
+            <span class="t-name">6 Tháng</span>
+            <span class="t-code">TH6M-***</span>
+          </button>
+        </div>
+
+        <div style="margin-bottom:14px;">
+          <label class="lbl" for="inpNote">3. Tên khách / SĐT / Ghi chú (tuỳ chọn)</label>
+          <input type="text" id="inpNote" placeholder="VD: Anh Nam - 0912.345.678" />
+        </div>
+
+        <button class="btn btn-gold" id="btnGenerate">🔑 TẠO KEY & COPY NGAY</button>
+      </div>
+
+      <!-- GENERATED KEY RESULT -->
+      <div class="card card-gold hidden" id="resultCard">
+        <div class="card-title">
+          <span>✅ Key Bản Quyền Đã Tạo</span>
+          <span class="badge b-LT" id="resBadge">VĨNH VIỄN</span>
+        </div>
+        <div style="font-size:12.5px;color:var(--muted);">
+          Máy khách: <strong class="mono" style="color:var(--text);" id="resHwid"></strong>
+        </div>
+        <div class="key-box mono" id="resKey"></div>
+        <div class="row-2">
+          <button class="btn btn-green" id="btnCopyKey" type="button">📋 Copy Key</button>
+          <button class="btn btn-sec" id="btnCopyZalo" type="button">💬 Copy Tin Zalo</button>
+        </div>
+      </div>
+
+      <!-- HISTORY -->
+      <div class="card">
+        <div class="card-title">
+          <span>📜 Lịch Sử Cấp Key (<span id="histCount">0</span>)</span>
+          <button class="icon-btn" id="btnExportHist" style="height:26px;font-size:11px;padding:0 9px;">⬇️ Sao lưu</button>
+        </div>
+        <input type="text" id="inpSearch" placeholder="Tìm theo tên khách hoặc Mã Thiết Bị..." style="padding:9px 12px;font-size:13px;margin-bottom:10px;" />
+        <div id="histList"></div>
+      </div>
+    </div>
+
+    <div class="foot">
+      TH AUDIO Studio Security • Public Key Pin: <span class="mono">8E73F37B...00E959E</span>
+    </div>
+  </div>
+
+  <!-- SETTINGS MODAL -->
+  <div class="modal-bg hidden" id="settingsModal">
+    <div class="card card-gold modal">
+      <div class="card-title">
+        <span>⚙️ Cài Đặt Bảo Mật</span>
+        <button class="icon-btn" id="btnCloseSettings" style="height:28px;">✕</button>
+      </div>
+      <div style="margin-bottom:14px;">
+        <label class="lbl">Đổi mã PIN khóa ứng dụng</label>
+        <div class="row-2" style="margin-bottom:8px;">
+          <input type="password" id="newPin1" inputmode="numeric" maxlength="8" placeholder="PIN mới (4-8 số)" />
+          <input type="password" id="newPin2" inputmode="numeric" maxlength="8" placeholder="Nhập lại PIN" />
+        </div>
+        <button class="btn btn-sec" id="btnChangePin" type="button">🔐 Cập Nhật Mã PIN</button>
+      </div>
+      <div style="border-top:1px solid var(--border);padding-top:14px;display:flex;flex-direction:column;gap:8px;">
+        <button class="btn btn-danger" id="btnWipeVault" type="button">🗑️ Xóa Master Key khỏi thiết bị này</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="./crypto_core.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      const VAULT_KEY = 'th_audio_keygen_vault_v1';
+      const HIST_KEY = 'th_audio_keygen_history_v1';
+      const TIER_LABELS = { LT: 'VĨNH VIỄN', '1Y': '1 NĂM', '6M': '6 THÁNG' };
+
+      let unlockedSeed = null;
+      let selectedTier = 'LT';
+      let lastGenerated = null;
+
+      const $ = (id) => document.getElementById(id);
+
+      function showToast(msg) {
+        const t = $('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        clearTimeout(showToast._tm);
+        showToast._tm = setTimeout(() => t.classList.remove('show'), 2400);
+      }
+
+      async function copyText(txt) {
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(txt);
+            return true;
+          }
+        } catch (e) {}
+        try {
+          const ta = document.createElement('textarea');
+          ta.value = txt;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          const ok = document.execCommand('copy');
+          document.body.removeChild(ta);
+          return ok;
+        } catch (e) {
+          return false;
+        }
+      }
+
+      function loadVault() {
+        try {
+          const raw = localStorage.getItem(VAULT_KEY);
+          return raw ? JSON.parse(raw) : null;
+        } catch (e) { return null; }
+      }
+
+      function saveVault(v) {
+        localStorage.setItem(VAULT_KEY, JSON.stringify(v));
+      }
+
+      function loadHistory() {
+        try {
+          const raw = localStorage.getItem(HIST_KEY);
+          const arr = raw ? JSON.parse(raw) : [];
+          return Array.isArray(arr) ? arr : [];
+        } catch (e) { return []; }
+      }
+
+      function saveHistory(arr) {
+        localStorage.setItem(HIST_KEY, JSON.stringify(arr.slice(0, 300)));
+      }
+
+      function showView(name) {
+        $('viewSetup').classList.toggle('hidden', name !== 'setup');
+        $('viewUnlock').classList.toggle('hidden', name !== 'unlock');
+        $('viewMain').classList.toggle('hidden', name !== 'main');
+        $('btnLock').classList.toggle('hidden', name !== 'main');
+        $('btnSettings').classList.toggle('hidden', name !== 'main');
+      }
+
+      function extractHwidSmart(text) {
+        const s = String(text || '');
+        const m = s.match(/TH[-\s]?[0-9A-Fa-f]{4}[-\s]?[0-9A-Fa-f]{4}[-\s]?[0-9A-Fa-f]{4}/i);
+        if (m) return THCrypto.normalizeHwid(m[0]);
+        return THCrypto.normalizeHwid(s);
+      }
+
+      function updateHwidIndicator() {
+        const val = extractHwidSmart($('inpHwid').value);
+        const st = $('hwidStatus');
+        if (!val) {
+          st.textContent = '';
+          st.className = 'status-line';
+          return false;
+        }
+        if (THCrypto.isValidHwid(val)) {
+          if ($('inpHwid').value !== val) $('inpHwid').value = val;
+          st.textContent = '✅ Mã Thiết Bị hợp lệ: ' + val;
+          st.className = 'status-line ok';
+          return true;
+        }
+        st.textContent = '⚠️ Cần đúng định dạng TH-XXXX-XXXX-XXXX (VD: TH-270B-23EE-61BE)';
+        st.className = 'status-line warn';
+        return false;
+      }
+
+      function buildZaloMessage(item) {
+        return (
+          '🎵 TUNE AI PRO — TH AUDIO\n' +
+          '• Gói bản quyền: ' + (TIER_LABELS[item.tier] || item.tier) + '\n' +
+          '• Mã thiết bị: ' + item.hwid + '\n' +
+          '• Key kích hoạt riêng cho máy của bạn:\n' +
+          item.key + '\n\n' +
+          '👉 Bạn copy nguyên dòng Key trên dán vào ô Kích hoạt của Tune AI Pro là vào dùng ngay nhé!'
+        );
+      }
+
+      function renderHistory() {
+        const q = ($('inpSearch').value || '').trim().toLowerCase();
+        const all = loadHistory();
+        $('histCount').textContent = String(all.length);
+        const list = $('histList');
+        const filtered = q
+          ? all.filter((x) =>
+              (x.hwid || '').toLowerCase().includes(q) ||
+              (x.note || '').toLowerCase().includes(q) ||
+              (TIER_LABELS[x.tier] || '').toLowerCase().includes(q)
+            )
+          : all;
+
+        if (!filtered.length) {
+          list.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:12.5px;padding:14px 0;">Chưa có Key nào trong lịch sử.</div>';
+          return;
+        }
+
+        list.innerHTML = '';
+        filtered.forEach((item) => {
+          const div = document.createElement('div');
+          div.className = 'hist-item';
+          const dt = new Date(item.ts || Date.now());
+          const dtStr = dt.toLocaleString('vi-VN', { hour12: false });
+          div.innerHTML =
+            '<div class="hist-top">' +
+              '<span class="hist-hw mono"></span>' +
+              '<span class="badge b-' + item.tier + '">' + (TIER_LABELS[item.tier] || item.tier) + '</span>' +
+            '</div>' +
+            '<div class="hist-meta"></div>' +
+            '<div class="hist-key mono"></div>' +
+            '<div class="hist-btns">' +
+              '<button type="button" data-act="cp">📋 Copy Key</button>' +
+              '<button type="button" data-act="zalo">💬 Tin Zalo</button>' +
+              '<button type="button" data-act="del" style="flex:0 0 42px;color:#FB7185;">🗑️</button>' +
+            '</div>';
+          div.querySelector('.hist-hw').textContent = item.hwid;
+          div.querySelector('.hist-meta').textContent = (item.note ? item.note + ' • ' : '') + dtStr;
+          div.querySelector('.hist-key').textContent = item.key;
+
+          div.querySelector('[data-act="cp"]').onclick = async () => {
+            await copyText(item.key);
+            showToast('✅ Đã copy Key cho ' + item.hwid);
+          };
+          div.querySelector('[data-act="zalo"]').onclick = async () => {
+            await copyText(buildZaloMessage(item));
+            showToast('💬 Đã copy tin nhắn gửi Zalo!');
+          };
+          div.querySelector('[data-act="del"]').onclick = () => {
+            const next = loadHistory().filter((x) => x.id !== item.id);
+            saveHistory(next);
+            renderHistory();
+            showToast('🗑️ Đã xóa khỏi lịch sử');
+          };
+          list.appendChild(div);
+        });
+      }
+
+      /* ---- Setup screen events ---- */
+      $('setupSeedFile').addEventListener('change', (e) => {
+        const f = e.target.files && e.target.files[0];
+        if (!f) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          const txt = String(reader.result || '').trim();
+          const m = txt.match(/[0-9a-fA-F]{64}/);
+          $('setupSeed').value = m ? m[0].toUpperCase() : txt;
+          $('setupSeed').dispatchEvent(new Event('input'));
+          $('setupPin1').focus();
+        };
+        reader.readAsText(f);
+      });
+
+      $('setupSeed').addEventListener('input', () => {
+        const val = $('setupSeed').value.trim();
+        const st = $('setupSeedStatus');
+        if (!val) { st.textContent = ''; return; }
+        const r = THCrypto.verifyMasterSeedHex(val);
+        if (r.ok) {
+          st.textContent = '✅ Master Key chính xác! Khớp 100% Public Key Tune AI Pro.';
+          st.className = 'status-line ok';
+        } else {
+          st.textContent = '❌ ' + r.error;
+          st.className = 'status-line err';
+        }
+      });
+
+      $('btnSaveSetup').addEventListener('click', () => {
+        const seedHex = $('setupSeed').value.trim();
+        const p1 = $('setupPin1').value.trim();
+        const p2 = $('setupPin2').value.trim();
+        const chk = THCrypto.verifyMasterSeedHex(seedHex);
+        if (!chk.ok) {
+          showToast('❌ ' + chk.error);
+          return;
+        }
+        if (!/^\d{4,8}$/.test(p1)) {
+          showToast('⚠️ Mã PIN phải gồm 4 đến 8 chữ số!');
+          return;
+        }
+        if (p1 !== p2) {
+          showToast('⚠️ Hai lần nhập PIN chưa khớp!');
+          return;
+        }
+        const vault = THCrypto.encryptSeedVault(chk.seedBytes, p1);
+        saveVault(vault);
+        unlockedSeed = chk.seedBytes;
+        $('setupSeed').value = '';
+        $('setupPin1').value = '';
+        $('setupPin2').value = '';
+        showView('main');
+        renderHistory();
+        showToast('🔐 Đã mã hóa & lưu Master Key an toàn!');
+      });
+
+      /* ---- Unlock screen events ---- */
+      function doUnlock() {
+        const pin = $('unlockPin').value.trim();
+        const vault = loadVault();
+        if (!vault) { showView('setup'); return; }
+        const st = $('unlockStatus');
+        if (!pin) { st.textContent = 'Vui lòng nhập mã PIN'; st.className = 'status-line center warn'; return; }
+        const dec = THCrypto.decryptSeedVault(vault, pin);
+        if (!dec) {
+          st.textContent = '❌ Sai mã PIN! Vui lòng thử lại.';
+          st.className = 'status-line center err';
+          $('unlockPin').value = '';
+          $('unlockPin').focus();
+          return;
+        }
+        unlockedSeed = dec;
+        $('unlockPin').value = '';
+        st.textContent = '';
+        showView('main');
+        renderHistory();
+        showToast('🔓 Đã mở khóa TH AUDIO KeyGen');
+      }
+
+      $('btnUnlock').addEventListener('click', doUnlock);
+      $('unlockPin').addEventListener('keydown', (e) => { if (e.key === 'Enter') doUnlock(); });
+      $('btnForgotPin').addEventListener('click', () => {
+        if (confirm('Bạn muốn nhập lại Master Seed và đặt mã PIN mới?')) {
+          $('qrBanner').classList.add('hidden');
+          showView('setup');
+        }
+      });
+
+      /* ---- Main workspace events ---- */
+      $('btnLock').addEventListener('click', () => {
+        unlockedSeed = null;
+        $('resultCard').classList.add('hidden');
+        showView('unlock');
+        setTimeout(() => $('unlockPin').focus(), 100);
+      });
+
+      $('tierGroup').querySelectorAll('.tier-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          $('tierGroup').querySelectorAll('.tier-btn').forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+          selectedTier = btn.getAttribute('data-tier');
+        });
+      });
+
+      $('inpHwid').addEventListener('input', updateHwidIndicator);
+      $('inpHwid').addEventListener('paste', () => setTimeout(updateHwidIndicator, 30));
+
+      $('btnPasteHwid').addEventListener('click', async () => {
+        try {
+          const txt = await navigator.clipboard.readText();
+          if (txt) {
+            $('inpHwid').value = extractHwidSmart(txt);
+            updateHwidIndicator();
+            showToast('📋 Đã dán Mã Thiết Bị');
+          }
+        } catch (e) {
+          $('inpHwid').focus();
+          showToast('👉 Nhấn giữ vào ô Mã Thiết Bị rồi chọn Dán');
+        }
+      });
+
+      $('btnClearHwid').addEventListener('click', () => {
+        $('inpHwid').value = '';
+        updateHwidIndicator();
+        $('inpHwid').focus();
+      });
+
+      $('btnGenerate').addEventListener('click', async () => {
+        if (!unlockedSeed) { showView('unlock'); return; }
+        const hwid = extractHwidSmart($('inpHwid').value);
+        if (!THCrypto.isValidHwid(hwid)) {
+          updateHwidIndicator();
+          showToast('⚠️ Mã Thiết Bị chưa hợp lệ (TH-XXXX-XXXX-XXXX)');
+          $('inpHwid').focus();
+          return;
+        }
+        $('inpHwid').value = hwid;
+        try {
+          const key = THCrypto.generateLicenseKey(unlockedSeed, selectedTier, hwid);
+          const item = {
+            id: Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+            ts: Date.now(),
+            hwid: hwid,
+            tier: selectedTier,
+            note: $('inpNote').value.trim(),
+            key: key
+          };
+          lastGenerated = item;
+
+          $('resHwid').textContent = item.hwid;
+          $('resKey').textContent = item.key;
+          const badge = $('resBadge');
+          badge.textContent = TIER_LABELS[item.tier] || item.tier;
+          badge.className = 'badge b-' + item.tier;
+          $('resultCard').classList.remove('hidden');
+
+          const hist = loadHistory();
+          hist.unshift(item);
+          saveHistory(hist);
+          renderHistory();
+
+          const copied = await copyText(item.key);
+          showToast(copied ? '✅ Đã tạo & Copy Key! Dán gửi khách ngay.' : '✅ Đã tạo Key thành công!');
+          $('resultCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } catch (e) {
+          showToast('❌ Lỗi tạo Key: ' + e.message);
+        }
+      });
+
+      $('btnCopyKey').addEventListener('click', async () => {
+        if (!lastGenerated) return;
+        await copyText(lastGenerated.key);
+        showToast('📋 Đã Copy Key!');
+      });
+
+      $('btnCopyZalo').addEventListener('click', async () => {
+        if (!lastGenerated) return;
+        await copyText(buildZaloMessage(lastGenerated));
+        showToast('💬 Đã Copy tin nhắn Zalo gửi khách!');
+      });
+
+      $('inpSearch').addEventListener('input', renderHistory);
+
+      $('btnExportHist').addEventListener('click', () => {
+        const data = JSON.stringify(loadHistory(), null, 2);
+        const blob = new Blob([data], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'TH_AUDIO_KeyHistory_' + new Date().toISOString().slice(0, 10) + '.json';
+        a.click();
+        showToast('⬇️ Đã xuất file lịch sử cấp Key');
+      });
+
+      /* ---- Settings Modal ---- */
+      $('btnSettings').addEventListener('click', () => $('settingsModal').classList.remove('hidden'));
+      $('btnCloseSettings').addEventListener('click', () => $('settingsModal').classList.add('hidden'));
+      $('settingsModal').addEventListener('click', (e) => {
+        if (e.target === $('settingsModal')) $('settingsModal').classList.add('hidden');
+      });
+
+      $('btnChangePin').addEventListener('click', () => {
+        if (!unlockedSeed) return;
+        const p1 = $('newPin1').value.trim();
+        const p2 = $('newPin2').value.trim();
+        if (!/^\d{4,8}$/.test(p1)) { showToast('⚠️ PIN mới phải gồm 4-8 chữ số'); return; }
+        if (p1 !== p2) { showToast('⚠️ Hai lần nhập PIN mới chưa khớp'); return; }
+        saveVault(THCrypto.encryptSeedVault(unlockedSeed, p1));
+        $('newPin1').value = '';
+        $('newPin2').value = '';
+        $('settingsModal').classList.add('hidden');
+        showToast('✅ Đã đổi mã PIN thành công!');
+      });
+
+      $('btnWipeVault').addEventListener('click', () => {
+        if (confirm('Xóa Master Key đã lưu khỏi thiết bị này? (Bạn vẫn có thể nạp lại từ file gốc trên máy tính)')) {
+          localStorage.removeItem(VAULT_KEY);
+          unlockedSeed = null;
+          $('settingsModal').classList.add('hidden');
+          $('qrBanner').classList.add('hidden');
+          showView('setup');
+          showToast('🗑️ Đã xóa Master Key khỏi máy này');
+        }
+      });
+
+      /* ---- Boot & iOS PWA detection & QR #import= ---- */
+      function init() {
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+        if (isIOS && !isStandalone) {
+          $('iosTip').style.display = 'block';
+        }
+
+        if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+          navigator.serviceWorker.register('./sw.js').catch(() => {});
+        }
+
+        // Check #import=<64-hex> from private offline PC QR code (hash is NEVER sent to server!)
+        const hash = String(location.hash || '');
+        const mImp = hash.match(/import=([0-9a-fA-F]{64})/);
+        if (mImp) {
+          try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+          const importedHex = mImp[1];
+          const chk = THCrypto.verifyMasterSeedHex(importedHex);
+          if (chk.ok) {
+            $('setupSeed').value = importedHex.toUpperCase();
+            $('setupSeedStatus').textContent = '✅ Master Key chính xác! Khớp 100% Public Key Tune AI Pro.';
+            $('setupSeedStatus').className = 'status-line ok';
+            $('qrBanner').classList.remove('hidden');
+            showView('setup');
+            setTimeout(() => $('setupPin1').focus(), 120);
+            return;
+          }
+        }
+
+        if (loadVault()) {
+          showView('unlock');
+          setTimeout(() => $('unlockPin').focus(), 120);
+        } else {
+          showView('setup');
+        }
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
