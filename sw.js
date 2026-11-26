@@ -1,4 +1,4 @@
-const CACHE_NAME = 'th-audio-keygen-v3';
+const CACHE_NAME = 'th-audio-keygen-v4';
 const ASSETS = [
   './',
   './index.html',
