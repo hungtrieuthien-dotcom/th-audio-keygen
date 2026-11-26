@@ -116,6 +116,24 @@
       background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
       color: #FFFFFF; padding: 12px 14px; font-size: 13px; font-weight: 800;
     }
+    .btn-push {
+      background: linear-gradient(135deg, #38BDF8 0%, #2563EB 100%);
+      color: #FFFFFF; padding: 14px 16px; font-size: 14.5px; font-weight: 800;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35); margin-bottom: 9px;
+    }
+    .drop-box {
+      background: rgba(34, 197, 94, 0.11); border: 1.5px solid rgba(34, 197, 94, 0.5);
+      border-radius: 13px; padding: 13px; margin: 10px 0 12px; text-align: center;
+    }
+    .drop-code {
+      font-size: 30px; font-weight: 900; letter-spacing: 6px; color: var(--gold2);
+      margin: 6px 0; text-shadow: 0 2px 12px rgba(229, 185, 92, 0.35);
+    }
+    .scan-banner {
+      background: rgba(56, 189, 248, 0.14); border: 1.5px solid rgba(56, 189, 248, 0.5);
+      border-radius: 13px; padding: 12px 14px; margin-bottom: 14px;
+      font-size: 13px; color: #BAE6FD; line-height: 1.45;
+    }
     .btn-danger {
       background: rgba(244, 63, 94, 0.14); color: #FB7185;
       border: 1px solid rgba(244, 63, 94, 0.35); padding: 11px 14px; font-size: 13px; font-weight: 700;
@@ -228,6 +246,12 @@
 
     <!-- SCREEN 1: FIRST-TIME SETUP -->
     <div class="card card-gold hidden" id="viewSetup">
+      <div id="setupScanBanner" class="scan-banner hidden">
+        <div style="font-weight:800;color:#7DD3FC;margin-bottom:5px;">🎯 Đã quét Mã Thiết Bị máy khách:</div>
+        <div class="mono" id="setupScanHwid" style="font-size:17px;font-weight:900;color:var(--gold2);margin-bottom:9px;"></div>
+        <button type="button" class="btn btn-gold" id="btnCopyScannedHwid" style="padding:11px 14px;font-size:13.5px;margin-bottom:7px;">📋 COPY MÃ MÁY (ĐỂ DÁN VÀO ICON TH KEYGEN)</button>
+        <div style="font-size:11.5px;color:#93C5FD;">Mẹo: Nếu nạp Master Key 1 lần ở Safari bên dưới, lần sau quét Camera sẽ mở thẳng vào nhập PIN tạo Key luôn!</div>
+      </div>
       <div class="center">
         <div class="lock-icon">🔑</div>
         <h2 style="margin:0 0 6px;font-size:19px;color:var(--gold2);">Thiết Lập Master Key Lần Đầu</h2>
@@ -270,6 +294,11 @@
 
     <!-- SCREEN 2: PIN UNLOCK -->
     <div class="card card-gold hidden" id="viewUnlock">
+      <div id="unlockScanBanner" class="scan-banner hidden">
+        <div style="font-weight:800;color:#7DD3FC;">🎯 Đã quét sẵn Mã Thiết Bị máy khách:</div>
+        <div class="mono" id="unlockScanHwid" style="font-size:16px;font-weight:900;color:var(--gold2);margin-top:3px;"></div>
+        <div style="font-size:12px;color:#BAE6FD;margin-top:3px;">Nhập mã PIN bên dưới để tạo & gửi thẳng Key sang máy khách!</div>
+      </div>
       <div class="center">
         <div class="lock-icon">🛡️</div>
         <h2 style="margin:0 0 6px;font-size:19px;color:var(--gold2);">Mở Khóa TH AUDIO KeyGen</h2>
@@ -342,6 +371,18 @@
           Máy khách: <strong class="mono" style="color:var(--text);" id="resHwid"></strong>
         </div>
         <div class="key-box mono" id="resKey"></div>
+        <button class="btn btn-push" id="btnPushKey" type="button">🚀 GỬI THẲNG VÀO MÁY KHÁCH (KHÔNG CẦN ZALO)</button>
+        <div class="drop-box hidden" id="dropBox">
+          <div id="dropTitle" style="font-size:13px;font-weight:800;color:#4ADE80;">✅ Đã gửi thẳng tới máy khách! (Tự kích hoạt sau 2–3 giây)</div>
+          <div style="font-size:11.5px;color:#BBF7D0;margin-top:3px;">Mã ngắn 6 số (nhập thẳng vào app hoặc mở link cho máy cũ):</div>
+          <div class="drop-code mono" id="dropCode">000000</div>
+          <div class="mono" id="dropUrl" style="font-size:11.5px;color:#93C5FD;word-break:break-all;margin-bottom:8px;"></div>
+          <div class="row-2">
+            <button class="btn btn-sec" id="btnCopyDropCode" type="button" style="padding:8px 10px;font-size:12px;">📋 Copy 6 số</button>
+            <button class="btn btn-sec" id="btnCopyDropUrl" type="button" style="padding:8px 10px;font-size:12px;">🔗 Copy Link ngắn</button>
+          </div>
+          <div id="dropTimer" style="font-size:11.5px;color:#98A0B8;margin-top:7px;">⏳ Tự hủy sau 10:00</div>
+        </div>
         <div class="row-2">
           <button class="btn btn-green" id="btnCopyKey" type="button">📋 Copy Key</button>
           <button class="btn btn-sec" id="btnCopyZalo" type="button">💬 Copy Tin Zalo</button>
@@ -394,11 +435,16 @@
 
       const VAULT_KEY = 'th_audio_keygen_vault_v1';
       const HIST_KEY = 'th_audio_keygen_history_v1';
+      const KEYDROP_API = 'https://th-audio-tone-api.thaudio-pro.workers.dev';
       const TIER_LABELS = { LT: 'VĨNH VIỄN', '1Y': '1 NĂM', '6M': '6 THÁNG' };
 
       let unlockedSeed = null;
       let selectedTier = 'LT';
       let lastGenerated = null;
+      let pendingScanHwid = '';
+      let activeDrop = null;
+      let dropTickTimer = null;
+      let dropPollTimer = null;
 
       const $ = (id) => document.getElementById(id);
 
@@ -533,14 +579,26 @@
             '<div class="hist-meta"></div>' +
             '<div class="hist-key mono"></div>' +
             '<div class="hist-btns">' +
-              '<button type="button" data-act="cp">📋 Copy Key</button>' +
-              '<button type="button" data-act="zalo">💬 Tin Zalo</button>' +
-              '<button type="button" data-act="del" style="flex:0 0 42px;color:#FB7185;">🗑️</button>' +
+              '<button type="button" data-act="push" style="background:rgba(37,99,235,0.28);border-color:rgba(56,189,248,0.45);color:#BAE6FD;">🚀 Gửi PC</button>' +
+              '<button type="button" data-act="cp">📋 Copy</button>' +
+              '<button type="button" data-act="zalo">💬 Zalo</button>' +
+              '<button type="button" data-act="del" style="flex:0 0 38px;color:#FB7185;">🗑️</button>' +
             '</div>';
           div.querySelector('.hist-hw').textContent = item.hwid;
           div.querySelector('.hist-meta').textContent = (item.note ? item.note + ' • ' : '') + dtStr;
           div.querySelector('.hist-key').textContent = item.key;
 
+          div.querySelector('[data-act="push"]').onclick = async () => {
+            lastGenerated = item;
+            $('resHwid').textContent = item.hwid;
+            $('resKey').textContent = item.key;
+            const badge = $('resBadge');
+            badge.textContent = TIER_LABELS[item.tier] || item.tier;
+            badge.className = 'badge b-' + item.tier;
+            $('resultCard').classList.remove('hidden');
+            $('resultCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            await pushKeyToCustomerPC(item);
+          };
           div.querySelector('[data-act="cp"]').onclick = async () => {
             await copyText(item.key);
             showToast('✅ Đã copy Key cho ' + item.hwid);
@@ -559,7 +617,95 @@
         });
       }
 
+      function clearDropTimers() {
+        if (dropTickTimer) { clearInterval(dropTickTimer); dropTickTimer = null; }
+        if (dropPollTimer) { clearInterval(dropPollTimer); dropPollTimer = null; }
+      }
+
+      function applyPendingScanHwid() {
+        if (pendingScanHwid && THCrypto.isValidHwid(pendingScanHwid)) {
+          $('inpHwid').value = pendingScanHwid;
+          updateHwidIndicator();
+          pendingScanHwid = '';
+          $('unlockScanBanner').classList.add('hidden');
+          $('setupScanBanner').classList.add('hidden');
+        }
+      }
+
+      async function pushKeyToCustomerPC(item) {
+        if (!item || !item.hwid || !item.key) return;
+        const btn = $('btnPushKey');
+        const oldTxt = '🚀 GỬI THẲNG VÀO MÁY KHÁCH (KHÔNG CẦN ZALO)';
+        btn.disabled = true;
+        btn.textContent = '⏳ Đang gửi Key bảo mật sang máy khách...';
+        clearDropTimers();
+        try {
+          const resp = await fetch(KEYDROP_API + '/api/keydrop/push', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ hwid: item.hwid, key: item.key })
+          });
+          const data = await resp.json();
+          if (!resp.ok || !data.ok) {
+            throw new Error(data.error || ('HTTP ' + resp.status));
+          }
+          activeDrop = data;
+          $('dropCode').textContent = data.code;
+          $('dropUrl').textContent = data.short_url;
+          $('dropTitle').textContent = '✅ Đã gửi thẳng tới máy khách! (Tự kích hoạt sau 2–3 giây)';
+          $('dropTitle').style.color = '#4ADE80';
+          $('dropBox').classList.remove('hidden');
+          showToast('🚀 Đã gửi Key sang máy ' + item.hwid + ' (Mã: ' + data.code + ')');
+
+          let rem = Number(data.expires_in || 600);
+          const updateRem = () => {
+            const m = String(Math.floor(rem / 60)).padStart(2, '0');
+            const s = String(rem % 60).padStart(2, '0');
+            $('dropTimer').textContent = rem > 0 ? ('⏳ Tự hủy sau ' + m + ':' + s) : '⌛ Mã tạm đã hết hạn 10 phút.';
+          };
+          updateRem();
+          dropTickTimer = setInterval(() => {
+            if (rem > 0) rem--;
+            updateRem();
+            if (rem <= 0) clearDropTimers();
+          }, 1000);
+
+          // Live watch until customer PC picks up & activates!
+          const watchedHwid = item.hwid;
+          const watchedCode = data.code;
+          let polls = 0;
+          dropPollTimer = setInterval(async () => {
+            polls++;
+            if (polls > 45 || !activeDrop || activeDrop.code !== watchedCode) {
+              clearInterval(dropPollTimer); dropPollTimer = null; return;
+            }
+            try {
+              const pr = await fetch(KEYDROP_API + '/api/keydrop/poll?hwid=' + encodeURIComponent(watchedHwid));
+              const pj = await pr.json();
+              if (pj && pj.ok && !pj.found) {
+                clearDropTimers();
+                $('dropTitle').textContent = '🎉 MÁY KHÁCH ĐÃ NHẬN & KÍCH HOẠT THÀNH CÔNG!';
+                $('dropTitle').style.color = '#FFD777';
+                $('dropTimer').textContent = '✅ Mã tạm đã tự hủy an toàn sau khi kích hoạt xong.';
+                showToast('🎉 Máy khách ' + watchedHwid + ' đã kích hoạt thành công!');
+              }
+            } catch (e) {}
+          }, 3500);
+        } catch (e) {
+          showToast('❌ Không gửi được (kiểm tra mạng 4G/WiFi): ' + (e.message || e));
+        } finally {
+          btn.disabled = false;
+          btn.textContent = oldTxt;
+        }
+      }
+
       /* ---- Setup screen events ---- */
+      $('btnCopyScannedHwid').addEventListener('click', async () => {
+        const hw = $('setupScanHwid').textContent.trim();
+        if (!hw) return;
+        const ok = await copyText(hw);
+        showToast(ok ? '✅ Đã Copy Mã máy! Mở icon TH KeyGen ngoài MH chính rồi bấm Dán.' : '⚠️ Chạm giữ Mã máy để Copy.');
+      });
       $('btnCopyImportedSeed').addEventListener('click', async () => {
         const val = $('setupSeed').value.trim();
         if (!val) return;
@@ -635,6 +781,7 @@
         $('setupPin1').value = '';
         $('setupPin2').value = '';
         showView('main');
+        applyPendingScanHwid();
         renderHistory();
         showToast('🔐 Đã mã hóa & lưu Master Key an toàn!');
       });
@@ -658,6 +805,7 @@
         $('unlockPin').value = '';
         st.textContent = '';
         showView('main');
+        applyPendingScanHwid();
         renderHistory();
         showToast('🔓 Đã mở khóa TH AUDIO KeyGen');
       }
@@ -737,6 +885,9 @@
           const badge = $('resBadge');
           badge.textContent = TIER_LABELS[item.tier] || item.tier;
           badge.className = 'badge b-' + item.tier;
+          clearDropTimers();
+          activeDrop = null;
+          $('dropBox').classList.add('hidden');
           $('resultCard').classList.remove('hidden');
 
           const hist = loadHistory();
@@ -745,11 +896,28 @@
           renderHistory();
 
           const copied = await copyText(item.key);
-          showToast(copied ? '✅ Đã tạo & Copy Key! Dán gửi khách ngay.' : '✅ Đã tạo Key thành công!');
+          showToast(copied ? '✅ Đã tạo & Copy Key! Bấm Gửi Thẳng hoặc dán gửi khách.' : '✅ Đã tạo Key thành công!');
           $('resultCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         } catch (e) {
           showToast('❌ Lỗi tạo Key: ' + e.message);
         }
+      });
+
+      $('btnPushKey').addEventListener('click', () => {
+        if (!lastGenerated) return;
+        pushKeyToCustomerPC(lastGenerated);
+      });
+
+      $('btnCopyDropCode').addEventListener('click', async () => {
+        if (!activeDrop) return;
+        await copyText(activeDrop.code);
+        showToast('📋 Đã Copy mã 6 số: ' + activeDrop.code);
+      });
+
+      $('btnCopyDropUrl').addEventListener('click', async () => {
+        if (!activeDrop) return;
+        await copyText(activeDrop.short_url);
+        showToast('🔗 Đã Copy Link ngắn lấy Key!');
       });
 
       $('btnCopyKey').addEventListener('click', async () => {
@@ -834,6 +1002,21 @@
             showView('setup');
             setTimeout(() => $('setupPin1').focus(), 120);
             return;
+          }
+        }
+
+        // Check #hwid=TH-XXXX-XXXX-XXXX from customer PC LoginWindow QR code
+        const fullRef = String(location.hash || '') + '&' + String(location.search || '');
+        const mHw = fullRef.match(/hwid=(TH[-\s]?[0-9A-Fa-f]{4}[-\s]?[0-9A-Fa-f]{4}[-\s]?[0-9A-Fa-f]{4})/i);
+        if (mHw) {
+          const normHw = extractHwidSmart(mHw[1]);
+          if (THCrypto.isValidHwid(normHw)) {
+            pendingScanHwid = normHw;
+            try { history.replaceState(null, '', location.pathname); } catch (e) {}
+            $('unlockScanHwid').textContent = normHw;
+            $('setupScanHwid').textContent = normHw;
+            $('unlockScanBanner').classList.remove('hidden');
+            $('setupScanBanner').classList.remove('hidden');
           }
         }
 
