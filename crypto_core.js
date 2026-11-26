@@ -420,6 +420,37 @@
     return 'TH' + tc + '-' + b64;
   }
 
+  function signAdminRequest(seedBytes, action, hwidRaw, tsOverride) {
+    const act = String(action || '').trim().toUpperCase();
+    const hwidNorm = hwidRaw ? normalizeHwid(hwidRaw) : '';
+    const ts = tsOverride ? parseInt(tsOverride, 10) : Math.floor(Date.now() / 1000);
+    const msg = 'THAUDIO|ADM|V1|' + act + '|' + hwidNorm + '|' + ts;
+    const sig = ed25519Sign(seedBytes, utf8ToBytes(msg));
+    return { ts: ts, admin_sig: base64UrlEncodeNoPad(sig) };
+  }
+
+  function signLicensePolicy(seedBytes, hwidRaw, statusRaw, tierRaw, expiresAtRaw, revRaw) {
+    const hwid = normalizeHwid(hwidRaw);
+    if (!isValidHwid(hwid)) {
+      throw new Error('Mã Thiết Bị không đúng định dạng TH-XXXX-XXXX-XXXX');
+    }
+    const status = String(statusRaw || 'active').trim().toLowerCase() === 'revoked' ? 'revoked' : 'active';
+    const tUp = String(tierRaw || 'LT').trim().toUpperCase();
+    const tier = (tUp === 'LT' || tUp === '1Y' || tUp === '6M' || tUp === 'CUSTOM') ? tUp : 'LT';
+    const expiresAt = Math.max(0, parseInt(expiresAtRaw || '0', 10) || 0);
+    const rev = Math.max(1, parseInt(revRaw || '0', 10) || Math.floor(Date.now() / 1000));
+    const msg = 'THAUDIO|POL|V1|' + hwid + '|' + status + '|' + tier + '|' + expiresAt + '|' + rev;
+    const sig = ed25519Sign(seedBytes, utf8ToBytes(msg));
+    return {
+      hwid: hwid,
+      status: status,
+      tier: tier,
+      expires_at: expiresAt,
+      rev: rev,
+      policy_sig: base64UrlEncodeNoPad(sig)
+    };
+  }
+
   function randomBytes(n) {
     const out = new Uint8Array(n);
     if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
@@ -477,6 +508,9 @@
     isValidHwid,
     verifyMasterSeedHex,
     generateLicenseKey,
+    signAdminRequest,
+    signLicensePolicy,
+    base64UrlEncodeNoPad,
     encryptSeedVault,
     decryptSeedVault,
     bytesToHex,
