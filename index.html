@@ -88,13 +88,74 @@
       color: var(--muted); margin-bottom: 6px;
     }
     .input-row { display: flex; gap: 8px; align-items: stretch; }
-    input[type="text"], input[type="password"], textarea {
+    input[type="text"], input[type="password"], input[type="date"], textarea {
       width: 100%; background: #10121A; color: var(--text);
       border: 1.5px solid var(--border); border-radius: 12px;
       padding: 12px 14px; font-size: 15px; outline: none;
       font-family: inherit; transition: border-color 0.15s;
+      color-scheme: dark;
     }
     input:focus, textarea:focus { border-color: var(--gold); }
+    .tabs {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+      background: #12141E; border: 1px solid var(--border);
+      border-radius: 14px; padding: 5px; margin-bottom: 14px;
+    }
+    .tab-btn {
+      border: none; border-radius: 10px; padding: 10px 8px;
+      font-size: 13.5px; font-weight: 800; cursor: pointer;
+      background: transparent; color: var(--muted); transition: all 0.15s;
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .tab-btn.active {
+      background: linear-gradient(135deg, rgba(229, 185, 92, 0.28), rgba(229, 185, 92, 0.12));
+      color: var(--gold2); border: 1px solid rgba(229, 185, 92, 0.45);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    }
+    .stats-bar {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px;
+    }
+    .stat-chip {
+      background: #10121B; border: 1px solid var(--border); border-radius: 11px;
+      padding: 8px 6px; text-align: center;
+    }
+    .stat-num { font-size: 17px; font-weight: 900; color: var(--text); line-height: 1.1; }
+    .stat-lbl { font-size: 10.5px; color: var(--muted); margin-top: 2px; }
+    .filter-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+    .flt-pill {
+      padding: 6px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 700;
+      border: 1px solid var(--border); background: #12141E; color: var(--muted); cursor: pointer;
+    }
+    .flt-pill.active {
+      background: rgba(229, 185, 92, 0.2); border-color: rgba(229, 185, 92, 0.55); color: var(--gold2);
+    }
+    .cust-item {
+      background: #11131C; border: 1px solid var(--border); border-left: 3.5px solid #22C55E;
+      border-radius: 12px; padding: 11px 12px; margin-bottom: 9px;
+    }
+    .cust-item.is-revoked { border-left-color: #F43F5E; background: rgba(244, 63, 94, 0.06); }
+    .cust-item.is-expiring { border-left-color: #F59E0B; }
+    .b-CUSTOM { background: rgba(245, 158, 11, 0.22); color: #FCD34D; }
+    .b-REVOKED { background: rgba(244, 63, 94, 0.24); color: #FDA4AF; }
+    .b-ACTIVE { background: rgba(34, 197, 94, 0.2); color: #86EFAC; }
+    .b-EXPIRED { background: rgba(245, 158, 11, 0.24); color: #FDE68A; }
+    .quick-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 10px; }
+    .q-btn {
+      border: 1px solid rgba(56, 189, 248, 0.35); background: rgba(37, 99, 235, 0.16);
+      color: #BAE6FD; border-radius: 9px; padding: 8px 4px; font-size: 12px; font-weight: 800; cursor: pointer;
+    }
+    .q-btn:active { transform: scale(0.96); }
+    .status-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+    .st-opt {
+      padding: 10px 8px; border-radius: 11px; border: 1.5px solid var(--border);
+      background: #11131C; color: var(--muted); font-size: 13px; font-weight: 800; cursor: pointer;
+    }
+    .st-opt.active-on { background: rgba(34, 197, 94, 0.18); border-color: #22C55E; color: #86EFAC; }
+    .st-opt.revoked-on { background: rgba(244, 63, 94, 0.2); border-color: #F43F5E; color: #FDA4AF; }
+    .tiers-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 12px; }
+    .tiers-4 .tier-btn { padding: 9px 4px; }
+    .tiers-4 .tier-btn .t-ico { font-size: 16px; }
+    .tiers-4 .tier-btn .t-name { font-size: 11.5px; }
     .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace !important; letter-spacing: 0.5px; }
     .btn {
       width: 100%; border: none; border-radius: 13px;
@@ -215,10 +276,11 @@
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     .modal-bg {
-      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.72);
-      display: flex; align-items: center; justify-content: center; padding: 18px; z-index: 900;
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.78);
+      display: flex; align-items: center; justify-content: center; padding: 14px; z-index: 900;
+      overflow-y: auto;
     }
-    .modal { width: 100%; max-width: 440px; }
+    .modal { width: 100%; max-width: 460px; max-height: 92dvh; overflow-y: auto; margin: auto; }
     .foot { text-align: center; font-size: 11px; color: var(--muted); opacity: 0.75; margin-top: 10px; }
   </style>
 </head>
@@ -318,6 +380,12 @@
 
     <!-- SCREEN 3: MAIN KEYGEN WORKSPACE -->
     <div class="hidden" id="viewMain">
+      <div class="tabs" id="mainTabs">
+        <button type="button" class="tab-btn active" data-tab="keygen">🔑 Tạo Key</button>
+        <button type="button" class="tab-btn" data-tab="customers">👥 Khách Hàng <span id="custTabBadge" style="opacity:0.85;"></span></button>
+      </div>
+
+      <div id="tabKeygen">
       <div class="card card-gold">
         <div class="card-title">
           <span>⚡ Tạo Key Theo Mã Thiết Bị</span>
@@ -398,10 +466,110 @@
         <input type="text" id="inpSearch" placeholder="Tìm theo tên khách hoặc Mã Thiết Bị..." style="padding:9px 12px;font-size:13px;margin-bottom:10px;" />
         <div id="histList"></div>
       </div>
+      </div><!-- /tabKeygen -->
+
+      <!-- TAB 2: CLOUD CUSTOMER LICENSE MANAGER -->
+      <div id="tabCustomers" class="hidden">
+        <div class="card card-gold">
+          <div class="card-title">
+            <span>👥 Quản Lý Key Khách Hàng</span>
+            <div style="display:flex;gap:6px;">
+              <button class="icon-btn" id="btnAddCust" type="button" style="height:28px;font-size:11.5px;padding:0 9px;border-color:rgba(229,185,92,0.45);color:var(--gold2);">➕ Thêm máy</button>
+              <button class="icon-btn" id="btnRefreshCust" type="button" style="height:28px;font-size:11.5px;padding:0 9px;">🔄 Tải lại</button>
+            </div>
+          </div>
+
+          <div class="stats-bar">
+            <div class="stat-chip">
+              <div class="stat-num" id="stTotal">0</div>
+              <div class="stat-lbl">Tổng máy</div>
+            </div>
+            <div class="stat-chip">
+              <div class="stat-num" id="stActive" style="color:#4ADE80;">0</div>
+              <div class="stat-lbl">Đang dùng</div>
+            </div>
+            <div class="stat-chip">
+              <div class="stat-num" id="stRevoked" style="color:#FB7185;">0</div>
+              <div class="stat-lbl">Đã thu hồi</div>
+            </div>
+          </div>
+
+          <input type="text" id="custSearch" placeholder="Tìm tên khách, SĐT hoặc TH-XXXX-XXXX-XXXX..." style="padding:10px 12px;font-size:13.5px;margin-bottom:9px;" />
+
+          <div class="filter-row" id="custFilterRow">
+            <button type="button" class="flt-pill active" data-flt="all">Tất cả</button>
+            <button type="button" class="flt-pill" data-flt="active">🟢 Đang dùng</button>
+            <button type="button" class="flt-pill" data-flt="revoked">🔴 Đã thu hồi</button>
+            <button type="button" class="flt-pill" data-flt="expiring">⏳ Sắp hết hạn</button>
+          </div>
+
+          <div class="status-line" id="custStatusLine" style="margin-top:0;margin-bottom:8px;"></div>
+          <div id="custList"></div>
+        </div>
+      </div>
     </div>
 
     <div class="foot">
       TH AUDIO Studio Security • Public Key Pin: <span class="mono">8E73F37B...00E959E</span>
+    </div>
+  </div>
+
+  <!-- CUSTOMER EDIT / REVOKE / EXTEND MODAL -->
+  <div class="modal-bg hidden" id="custModal">
+    <div class="card card-gold modal">
+      <div class="card-title">
+        <span id="custModalTitle">✏️ Chỉnh Sửa Bản Quyền</span>
+        <button class="icon-btn" id="btnCloseCustModal" type="button" style="height:28px;">✕</button>
+      </div>
+
+      <div style="margin-bottom:11px;">
+        <label class="lbl" for="edHwid">Mã Thiết Bị (HWID)</label>
+        <input type="text" id="edHwid" class="mono" placeholder="TH-XXXX-XXXX-XXXX" autocomplete="off" spellcheck="false" />
+      </div>
+
+      <div style="margin-bottom:11px;">
+        <label class="lbl" for="edNote">Tên khách / SĐT / Ghi chú</label>
+        <input type="text" id="edNote" placeholder="VD: Anh Nam - 0912.345.678" />
+      </div>
+
+      <div style="margin-bottom:11px;">
+        <label class="lbl">Trạng thái bản quyền</label>
+        <div class="status-toggle">
+          <button type="button" class="st-opt active-on" id="edStActive">✅ Đang hoạt động</button>
+          <button type="button" class="st-opt" id="edStRevoked">🚫 Thu hồi (Khóa)</button>
+        </div>
+      </div>
+
+      <div id="edReasonWrap" class="hidden" style="margin-bottom:11px;">
+        <label class="lbl" for="edReason">Lý do thu hồi (hiển thị trên máy khách)</label>
+        <input type="text" id="edReason" placeholder="VD: Bản quyền đã bị thu hồi — Liên hệ TH AUDIO" />
+      </div>
+
+      <div style="margin-bottom:11px;">
+        <label class="lbl">Gói bản quyền áp dụng</label>
+        <div class="tiers-4" id="edTierGroup">
+          <button type="button" class="tier-btn active" data-tier="LT"><span class="t-ico">👑</span><span class="t-name">Vĩnh Viễn</span></button>
+          <button type="button" class="tier-btn" data-tier="1Y"><span class="t-ico">⭐</span><span class="t-name">1 Năm</span></button>
+          <button type="button" class="tier-btn" data-tier="6M"><span class="t-ico">🟣</span><span class="t-name">6 Tháng</span></button>
+          <button type="button" class="tier-btn" data-tier="CUSTOM"><span class="t-ico">📅</span><span class="t-name">Tùy chỉnh</span></button>
+        </div>
+      </div>
+
+      <div id="edExpiryBox" class="hidden" style="margin-bottom:13px;background:#10121B;border:1px solid var(--border);border-radius:12px;padding:11px;">
+        <label class="lbl" style="margin-bottom:7px;">Gia hạn nhanh (cộng thêm thời gian)</label>
+        <div class="quick-grid">
+          <button type="button" class="q-btn" data-days="7">+7 ngày</button>
+          <button type="button" class="q-btn" data-days="30">+30 ngày</button>
+          <button type="button" class="q-btn" data-days="180">+6 tháng</button>
+          <button type="button" class="q-btn" data-days="365">+1 năm</button>
+        </div>
+        <label class="lbl" for="edExpireDate">Hoặc chọn chính xác ngày hết hạn</label>
+        <input type="date" id="edExpireDate" />
+        <div class="status-line ok" id="edExpirePreview" style="margin-top:6px;"></div>
+      </div>
+
+      <button type="button" class="btn btn-gold" id="btnSaveCust" style="margin-bottom:8px;">💾 LƯU & ÁP DỤNG NGAY</button>
+      <button type="button" class="btn btn-danger hidden" id="btnDeleteCust">🗑️ Xóa máy này khỏi danh sách Cloud</button>
     </div>
   </div>
 
@@ -436,7 +604,7 @@
       const VAULT_KEY = 'th_audio_keygen_vault_v1';
       const HIST_KEY = 'th_audio_keygen_history_v1';
       const KEYDROP_API = 'https://th-audio-tone-api.thaudio-pro.workers.dev';
-      const TIER_LABELS = { LT: 'VĨNH VIỄN', '1Y': '1 NĂM', '6M': '6 THÁNG' };
+      const TIER_LABELS = { LT: 'VĨNH VIỄN', '1Y': '1 NĂM', '6M': '6 THÁNG', CUSTOM: 'TÙY CHỈNH' };
 
       let unlockedSeed = null;
       let selectedTier = 'LT';
@@ -445,6 +613,13 @@
       let activeDrop = null;
       let dropTickTimer = null;
       let dropPollTimer = null;
+      let activeTab = 'keygen';
+      let cloudCustomers = [];
+      let custFilter = 'all';
+      let editingCust = null;
+      let edStatus = 'active';
+      let edTier = 'LT';
+      let edExpiresAt = 0;
 
       const $ = (id) => document.getElementById(id);
 
@@ -580,9 +755,10 @@
             '<div class="hist-key mono"></div>' +
             '<div class="hist-btns">' +
               '<button type="button" data-act="push" style="background:rgba(37,99,235,0.28);border-color:rgba(56,189,248,0.45);color:#BAE6FD;">🚀 Gửi PC</button>' +
+              '<button type="button" data-act="manage" style="background:rgba(229,185,92,0.16);border-color:rgba(229,185,92,0.4);color:#FFD777;">⚙️ Quản lý</button>' +
               '<button type="button" data-act="cp">📋 Copy</button>' +
               '<button type="button" data-act="zalo">💬 Zalo</button>' +
-              '<button type="button" data-act="del" style="flex:0 0 38px;color:#FB7185;">🗑️</button>' +
+              '<button type="button" data-act="del" style="flex:0 0 34px;color:#FB7185;">🗑️</button>' +
             '</div>';
           div.querySelector('.hist-hw').textContent = item.hwid;
           div.querySelector('.hist-meta').textContent = (item.note ? item.note + ' • ' : '') + dtStr;
@@ -598,6 +774,19 @@
             $('resultCard').classList.remove('hidden');
             $('resultCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             await pushKeyToCustomerPC(item);
+          };
+          div.querySelector('[data-act="manage"]').onclick = () => {
+            const hit = cloudCustomers.find((c) => c.hwid === item.hwid);
+            openCustModal(hit || {
+              hwid: item.hwid,
+              note: item.note || '',
+              status: 'active',
+              tier: item.tier || 'LT',
+              expires_at: defaultExpiryForTier(item.tier || 'LT'),
+              reason: '',
+              rev: 0,
+              _isNew: !hit
+            });
           };
           div.querySelector('[data-act="cp"]').onclick = async () => {
             await copyText(item.key);
@@ -620,6 +809,298 @@
       function clearDropTimers() {
         if (dropTickTimer) { clearInterval(dropTickTimer); dropTickTimer = null; }
         if (dropPollTimer) { clearInterval(dropPollTimer); dropPollTimer = null; }
+      }
+
+      function defaultExpiryForTier(tier) {
+        const now = Math.floor(Date.now() / 1000);
+        if (tier === '1Y') return now + 365 * 86400;
+        if (tier === '6M') return now + 180 * 86400;
+        if (tier === 'CUSTOM') return now + 30 * 86400;
+        return 0;
+      }
+
+      function unixToDateInput(sec) {
+        if (!sec || sec <= 0) return '';
+        const d = new Date(sec * 1000);
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return y + '-' + m + '-' + day;
+      }
+
+      function dateInputToUnixEndOfDay(str) {
+        const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(str || '').trim());
+        if (!m) return 0;
+        const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]), 23, 59, 59);
+        return Math.floor(d.getTime() / 1000);
+      }
+
+      function fmtDateVN(sec) {
+        if (!sec || sec <= 0) return 'Vĩnh viễn';
+        const d = new Date(sec * 1000);
+        return String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear();
+      }
+
+      function fmtRelativeSeen(sec) {
+        if (!sec || sec <= 0) return 'Chưa online';
+        const diff = Math.max(0, Math.floor(Date.now() / 1000) - sec);
+        if (diff < 120) return 'Vừa xong';
+        if (diff < 3600) return Math.floor(diff / 60) + ' phút trước';
+        if (diff < 86400) return Math.floor(diff / 3600) + ' giờ trước';
+        return Math.floor(diff / 86400) + ' ngày trước';
+      }
+
+      function switchTab(tabName) {
+        activeTab = tabName === 'customers' ? 'customers' : 'keygen';
+        $('mainTabs').querySelectorAll('.tab-btn').forEach((b) => {
+          b.classList.toggle('active', b.getAttribute('data-tab') === activeTab);
+        });
+        $('tabKeygen').classList.toggle('hidden', activeTab !== 'keygen');
+        $('tabCustomers').classList.toggle('hidden', activeTab !== 'customers');
+        if (activeTab === 'customers' && unlockedSeed) {
+          fetchCloudCustomers(false);
+        }
+      }
+
+      async function saveCloudPolicy(opts) {
+        if (!unlockedSeed) throw new Error('Chưa mở khóa PIN');
+        const hwid = THCrypto.normalizeHwid(opts.hwid || '');
+        if (!THCrypto.isValidHwid(hwid)) throw new Error('Mã Thiết Bị không hợp lệ');
+        const status = opts.status === 'revoked' ? 'revoked' : 'active';
+        const tier = ['LT', '1Y', '6M', 'CUSTOM'].includes(String(opts.tier || '').toUpperCase())
+          ? String(opts.tier).toUpperCase() : 'LT';
+        const expiresAt = tier === 'LT' ? 0 : Math.max(0, parseInt(opts.expires_at || '0', 10) || 0);
+        const nowSec = Math.floor(Date.now() / 1000);
+        let rev = Math.max(Number(opts.prev_rev || 0) + 1, nowSec);
+
+        for (let attempt = 0; attempt < 2; attempt++) {
+          const pol = THCrypto.signLicensePolicy(unlockedSeed, hwid, status, tier, expiresAt, rev);
+          const adm = THCrypto.signAdminRequest(unlockedSeed, 'SET', hwid);
+          const body = {
+            hwid: pol.hwid,
+            status: pol.status,
+            tier: pol.tier,
+            expires_at: pol.expires_at,
+            rev: pol.rev,
+            policy_sig: pol.policy_sig,
+            ts: adm.ts,
+            admin_sig: adm.admin_sig,
+            reason: String(opts.reason || '').trim()
+          };
+          if (opts.note !== undefined) body.note = String(opts.note || '').trim();
+          const resp = await fetch(KEYDROP_API + '/api/license/admin/set', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+          });
+          const data = await resp.json();
+          if (resp.status === 409 && data && data.min_rev && attempt === 0) {
+            rev = Number(data.min_rev);
+            continue;
+          }
+          if (!resp.ok || !data.ok) {
+            throw new Error((data && data.error) || ('HTTP ' + resp.status));
+          }
+          return data.license;
+        }
+      }
+
+      async function deleteCloudCustomer(hwid) {
+        if (!unlockedSeed) throw new Error('Chưa mở khóa PIN');
+        const hw = THCrypto.normalizeHwid(hwid);
+        const adm = THCrypto.signAdminRequest(unlockedSeed, 'DELETE', hw);
+        const resp = await fetch(KEYDROP_API + '/api/license/admin/delete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ hwid: hw, ts: adm.ts, admin_sig: adm.admin_sig })
+        });
+        const data = await resp.json();
+        if (!resp.ok || !data.ok) throw new Error((data && data.error) || ('HTTP ' + resp.status));
+        return true;
+      }
+
+      async function fetchCloudCustomers(silent) {
+        if (!unlockedSeed) return;
+        const st = $('custStatusLine');
+        if (!silent) {
+          st.textContent = '⏳ Đang tải danh sách khách hàng từ Cloud (ký xác thực Ed25519)...';
+          st.className = 'status-line warn';
+        }
+        try {
+          const adm = THCrypto.signAdminRequest(unlockedSeed, 'LIST', '');
+          const resp = await fetch(KEYDROP_API + '/api/license/admin/list', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ts: adm.ts, admin_sig: adm.admin_sig, limit: 500 })
+          });
+          const data = await resp.json();
+          if (!resp.ok || !data.ok) throw new Error((data && data.error) || ('HTTP ' + resp.status));
+          cloudCustomers = Array.isArray(data.licenses) ? data.licenses : [];
+          $('custTabBadge').textContent = cloudCustomers.length ? '(' + cloudCustomers.length + ')' : '';
+          renderCloudCustomers();
+          if (!silent) {
+            st.textContent = '✅ Đã đồng bộ ' + cloudCustomers.length + ' máy khách lúc ' + new Date().toLocaleTimeString('vi-VN', { hour12: false });
+            st.className = 'status-line ok';
+          }
+        } catch (e) {
+          if (!silent) {
+            st.textContent = '📶 Không tải được danh sách Cloud (kiểm tra mạng 4G/WiFi): ' + (e.message || e);
+            st.className = 'status-line err';
+          }
+        }
+      }
+
+      function renderCloudCustomers() {
+        const now = Math.floor(Date.now() / 1000);
+        const q = ($('custSearch').value || '').trim().toLowerCase();
+        const total = cloudCustomers.length;
+        const revCnt = cloudCustomers.filter((c) => c.status === 'revoked').length;
+        const actCnt = total - revCnt;
+        $('stTotal').textContent = String(total);
+        $('stActive').textContent = String(actCnt);
+        $('stRevoked').textContent = String(revCnt);
+
+        let rows = cloudCustomers.slice();
+        if (custFilter === 'active') {
+          rows = rows.filter((c) => c.status !== 'revoked');
+        } else if (custFilter === 'revoked') {
+          rows = rows.filter((c) => c.status === 'revoked');
+        } else if (custFilter === 'expiring') {
+          rows = rows.filter((c) => c.status !== 'revoked' && c.expires_at > 0 && c.expires_at <= now + 30 * 86400);
+        }
+        if (q) {
+          rows = rows.filter((c) =>
+            (c.hwid || '').toLowerCase().includes(q) ||
+            (c.note || '').toLowerCase().includes(q) ||
+            (c.tier || '').toLowerCase().includes(q)
+          );
+        }
+
+        const list = $('custList');
+        if (!rows.length) {
+          list.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:12.5px;padding:18px 6px;">Không có máy khách nào trong mục này.<br/>Máy khách chạy v2.0.22+ hoặc Key mới tạo sẽ tự xuất hiện tại đây!</div>';
+          return;
+        }
+
+        list.innerHTML = '';
+        rows.forEach((c) => {
+          const isRev = c.status === 'revoked';
+          const isExp = !isRev && c.expires_at > 0 && c.expires_at <= now;
+          const isSoon = !isRev && !isExp && c.expires_at > 0 && c.expires_at <= now + 30 * 86400;
+          const div = document.createElement('div');
+          div.className = 'cust-item' + (isRev ? ' is-revoked' : ((isExp || isSoon) ? ' is-expiring' : ''));
+
+          let expTxt = '👑 Vĩnh viễn';
+          if (c.expires_at > 0) {
+            const remDays = Math.ceil((c.expires_at - now) / 86400);
+            if (remDays <= 0) expTxt = '⌛ Đã hết hạn (' + fmtDateVN(c.expires_at) + ')';
+            else expTxt = '⏱️ Hạn: ' + fmtDateVN(c.expires_at) + ' (còn ' + remDays + ' ngày)';
+          } else if (c.rev === 0 && c.local_tier) {
+            expTxt = '💻 Gói theo máy: ' + c.local_tier;
+          }
+
+          const statusBadge = isRev
+            ? '<span class="badge b-REVOKED">🚫 ĐÃ THU HỒI</span>'
+            : (isExp ? '<span class="badge b-EXPIRED">⌛ HẾT HẠN</span>' : '<span class="badge b-ACTIVE">🟢 ĐANG DÙNG</span>');
+          const tierBadge = '<span class="badge b-' + (c.tier || 'LT') + '">' + (TIER_LABELS[c.tier] || c.tier || 'LT') + '</span>';
+
+          div.innerHTML =
+            '<div class="hist-top">' +
+              '<span class="hist-hw mono"></span>' +
+              '<div style="display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;">' + tierBadge + statusBadge + '</div>' +
+            '</div>' +
+            '<div class="cust-note" style="font-size:13px;font-weight:700;color:#F8FAFC;margin-bottom:3px;"></div>' +
+            '<div class="cust-exp" style="font-size:12px;color:var(--gold2);margin-bottom:4px;"></div>' +
+            '<div class="cust-meta" style="font-size:11px;color:var(--muted);margin-bottom:8px;"></div>' +
+            '<div class="hist-btns">' +
+              '<button type="button" data-act="edit" style="background:rgba(229,185,92,0.2);border-color:rgba(229,185,92,0.5);color:#FFD777;">✏️ Chỉnh hạn / Gói</button>' +
+              '<button type="button" data-act="toggle" style="' +
+                (isRev
+                  ? 'background:rgba(34,197,94,0.2);border-color:rgba(34,197,94,0.45);color:#86EFAC;'
+                  : 'background:rgba(244,63,94,0.16);border-color:rgba(244,63,94,0.45);color:#FDA4AF;') +
+              '">' + (isRev ? '✅ Mở khóa lại' : '🚫 Thu hồi Key') + '</button>' +
+            '</div>';
+
+          div.querySelector('.hist-hw').textContent = c.hwid;
+          const noteEl = div.querySelector('.cust-note');
+          if (c.note) noteEl.textContent = '👤 ' + c.note;
+          else noteEl.classList.add('hidden');
+          div.querySelector('.cust-exp').textContent = expTxt;
+          let metaLine = 'Online: ' + fmtRelativeSeen(c.last_seen_at);
+          if (c.app_version) metaLine += ' • App v' + c.app_version;
+          if (isRev && c.reason) metaLine += ' • Lý do: ' + c.reason;
+          div.querySelector('.cust-meta').textContent = metaLine;
+
+          div.querySelector('[data-act="edit"]').onclick = () => openCustModal(c);
+          div.querySelector('[data-act="toggle"]').onclick = async () => {
+            const wantRevoke = !isRev;
+            const confirmMsg = wantRevoke
+              ? ('Thu hồi & khóa bản quyền máy ' + c.hwid + (c.note ? (' (' + c.note + ')') : '') + '?\nMáy khách sẽ tự khóa trong lần kiểm tra kế tiếp (kể cả khi tắt mạng sau đó)!')
+              : ('Mở khóa lại bản quyền cho máy ' + c.hwid + '?');
+            if (!confirm(confirmMsg)) return;
+            try {
+              const updated = await saveCloudPolicy({
+                hwid: c.hwid,
+                note: c.note,
+                status: wantRevoke ? 'revoked' : 'active',
+                tier: c.tier || 'LT',
+                expires_at: c.expires_at || 0,
+                reason: wantRevoke ? (c.reason || 'Bản quyền đã bị thu hồi bởi TH AUDIO') : '',
+                prev_rev: c.rev || 0
+              });
+              const idx = cloudCustomers.findIndex((x) => x.hwid === c.hwid);
+              if (idx >= 0) cloudCustomers[idx] = updated;
+              renderCloudCustomers();
+              showToast(wantRevoke ? ('🚫 Đã thu hồi Key máy ' + c.hwid) : ('✅ Đã mở khóa lại máy ' + c.hwid));
+            } catch (e) {
+              showToast('❌ Lỗi cập nhật: ' + (e.message || e));
+            }
+          };
+
+          list.appendChild(div);
+        });
+      }
+
+      function updateCustModalUI() {
+        $('edStActive').className = 'st-opt' + (edStatus === 'active' ? ' active-on' : '');
+        $('edStRevoked').className = 'st-opt' + (edStatus === 'revoked' ? ' revoked-on' : '');
+        $('edReasonWrap').classList.toggle('hidden', edStatus !== 'revoked');
+        $('edTierGroup').querySelectorAll('.tier-btn').forEach((b) => {
+          b.classList.toggle('active', b.getAttribute('data-tier') === edTier);
+        });
+        const isLt = edTier === 'LT';
+        $('edExpiryBox').classList.toggle('hidden', isLt);
+        if (!isLt) {
+          if (!edExpiresAt || edExpiresAt <= 0) {
+            edExpiresAt = defaultExpiryForTier(edTier);
+          }
+          $('edExpireDate').value = unixToDateInput(edExpiresAt);
+          const now = Math.floor(Date.now() / 1000);
+          const remDays = Math.ceil((edExpiresAt - now) / 86400);
+          if (remDays > 0) {
+            $('edExpirePreview').textContent = '✅ Hạn mới: ' + fmtDateVN(edExpiresAt) + ' (còn ' + remDays + ' ngày)';
+            $('edExpirePreview').className = 'status-line ok';
+          } else {
+            $('edExpirePreview').textContent = '⚠️ Ngày đã qua (' + fmtDateVN(edExpiresAt) + ') — Máy khách sẽ báo Hết hạn';
+            $('edExpirePreview').className = 'status-line warn';
+          }
+        }
+      }
+
+      function openCustModal(custObj) {
+        const isNew = !custObj || Boolean(custObj._isNew);
+        editingCust = custObj || { hwid: '', note: '', status: 'active', tier: 'LT', expires_at: 0, reason: '', rev: 0, _isNew: true };
+        $('custModalTitle').textContent = isNew ? '➕ Thêm Máy Khách Vào Cloud' : '✏️ Chỉnh Hạn & Thu Hồi Key';
+        $('edHwid').value = editingCust.hwid || '';
+        $('edHwid').disabled = !isNew;
+        $('edNote').value = editingCust.note || '';
+        $('edReason').value = editingCust.reason || '';
+        edStatus = editingCust.status === 'revoked' ? 'revoked' : 'active';
+        edTier = ['LT', '1Y', '6M', 'CUSTOM'].includes(editingCust.tier) ? editingCust.tier : 'LT';
+        edExpiresAt = Number(editingCust.expires_at || 0);
+        $('btnDeleteCust').classList.toggle('hidden', isNew);
+        updateCustModalUI();
+        $('custModal').classList.remove('hidden');
       }
 
       function applyPendingScanHwid() {
@@ -781,8 +1262,10 @@
         $('setupPin1').value = '';
         $('setupPin2').value = '';
         showView('main');
+        switchTab('keygen');
         applyPendingScanHwid();
         renderHistory();
+        fetchCloudCustomers(true);
         showToast('🔐 Đã mã hóa & lưu Master Key an toàn!');
       });
 
@@ -805,8 +1288,10 @@
         $('unlockPin').value = '';
         st.textContent = '';
         showView('main');
+        switchTab('keygen');
         applyPendingScanHwid();
         renderHistory();
+        fetchCloudCustomers(true);
         showToast('🔓 Đã mở khóa TH AUDIO KeyGen');
       }
 
@@ -822,9 +1307,111 @@
       /* ---- Main workspace events ---- */
       $('btnLock').addEventListener('click', () => {
         unlockedSeed = null;
+        cloudCustomers = [];
         $('resultCard').classList.add('hidden');
+        $('custModal').classList.add('hidden');
         showView('unlock');
         setTimeout(() => $('unlockPin').focus(), 100);
+      });
+
+      $('mainTabs').querySelectorAll('.tab-btn').forEach((btn) => {
+        btn.addEventListener('click', () => switchTab(btn.getAttribute('data-tab')));
+      });
+
+      $('btnRefreshCust').addEventListener('click', () => fetchCloudCustomers(false));
+      $('btnAddCust').addEventListener('click', () => openCustModal(null));
+      $('custSearch').addEventListener('input', renderCloudCustomers);
+      $('custFilterRow').querySelectorAll('.flt-pill').forEach((pill) => {
+        pill.addEventListener('click', () => {
+          $('custFilterRow').querySelectorAll('.flt-pill').forEach((p) => p.classList.remove('active'));
+          pill.classList.add('active');
+          custFilter = pill.getAttribute('data-flt') || 'all';
+          renderCloudCustomers();
+        });
+      });
+
+      /* ---- Customer Edit Modal events ---- */
+      $('btnCloseCustModal').addEventListener('click', () => $('custModal').classList.add('hidden'));
+      $('custModal').addEventListener('click', (e) => {
+        if (e.target === $('custModal')) $('custModal').classList.add('hidden');
+      });
+      $('edStActive').addEventListener('click', () => { edStatus = 'active'; updateCustModalUI(); });
+      $('edStRevoked').addEventListener('click', () => { edStatus = 'revoked'; updateCustModalUI(); });
+      $('edTierGroup').querySelectorAll('.tier-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const newT = btn.getAttribute('data-tier');
+          edTier = newT;
+          if (newT === 'LT') edExpiresAt = 0;
+          else if (newT === '1Y') edExpiresAt = defaultExpiryForTier('1Y');
+          else if (newT === '6M') edExpiresAt = defaultExpiryForTier('6M');
+          else if (edExpiresAt <= 0) edExpiresAt = defaultExpiryForTier('CUSTOM');
+          updateCustModalUI();
+        });
+      });
+      $('edExpiryBox').querySelectorAll('.q-btn').forEach((qb) => {
+        qb.addEventListener('click', () => {
+          const days = parseInt(qb.getAttribute('data-days') || '0', 10);
+          const now = Math.floor(Date.now() / 1000);
+          const base = Math.max(now, edExpiresAt > 0 ? edExpiresAt : now);
+          edExpiresAt = base + days * 86400;
+          if (edTier === 'LT') edTier = 'CUSTOM';
+          updateCustModalUI();
+        });
+      });
+      $('edExpireDate').addEventListener('change', () => {
+        const ts = dateInputToUnixEndOfDay($('edExpireDate').value);
+        if (ts > 0) {
+          edExpiresAt = ts;
+          updateCustModalUI();
+        }
+      });
+      $('btnSaveCust').addEventListener('click', async () => {
+        const hw = extractHwidSmart($('edHwid').value);
+        if (!THCrypto.isValidHwid(hw)) {
+          showToast('⚠️ Mã Thiết Bị phải đúng dạng TH-XXXX-XXXX-XXXX');
+          $('edHwid').focus();
+          return;
+        }
+        const btn = $('btnSaveCust');
+        btn.disabled = true;
+        btn.textContent = '⏳ Đang ký Ed25519 & lưu lên Cloud...';
+        try {
+          const saved = await saveCloudPolicy({
+            hwid: hw,
+            note: $('edNote').value.trim(),
+            status: edStatus,
+            tier: edTier,
+            expires_at: edTier === 'LT' ? 0 : edExpiresAt,
+            reason: edStatus === 'revoked' ? ($('edReason').value.trim() || 'Bản quyền đã bị thu hồi bởi TH AUDIO') : '',
+            prev_rev: editingCust ? Number(editingCust.rev || 0) : 0
+          });
+          const idx = cloudCustomers.findIndex((x) => x.hwid === hw);
+          if (idx >= 0) cloudCustomers[idx] = saved;
+          else cloudCustomers.unshift(saved);
+          $('custTabBadge').textContent = '(' + cloudCustomers.length + ')';
+          renderCloudCustomers();
+          $('custModal').classList.add('hidden');
+          showToast('✅ Đã lưu & ký Ed25519 thành công cho ' + hw);
+        } catch (e) {
+          showToast('❌ Không lưu được (kiểm tra mạng): ' + (e.message || e));
+        } finally {
+          btn.disabled = false;
+          btn.textContent = '💾 LƯU & ÁP DỤNG NGAY';
+        }
+      });
+      $('btnDeleteCust').addEventListener('click', async () => {
+        if (!editingCust || !editingCust.hwid) return;
+        if (!confirm('Xóa máy ' + editingCust.hwid + ' khỏi danh sách quản lý Cloud? (Không xóa lịch sử tạo Key cục bộ)')) return;
+        try {
+          await deleteCloudCustomer(editingCust.hwid);
+          cloudCustomers = cloudCustomers.filter((x) => x.hwid !== editingCust.hwid);
+          $('custTabBadge').textContent = cloudCustomers.length ? '(' + cloudCustomers.length + ')' : '';
+          renderCloudCustomers();
+          $('custModal').classList.add('hidden');
+          showToast('🗑️ Đã xóa ' + editingCust.hwid + ' khỏi danh sách Cloud');
+        } catch (e) {
+          showToast('❌ Lỗi xóa: ' + (e.message || e));
+        }
       });
 
       $('tierGroup').querySelectorAll('.tier-btn').forEach((btn) => {
@@ -898,6 +1485,25 @@
           const copied = await copyText(item.key);
           showToast(copied ? '✅ Đã tạo & Copy Key! Bấm Gửi Thẳng hoặc dán gửi khách.' : '✅ Đã tạo Key thành công!');
           $('resultCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+          // Non-blocking background registration to Cloud Customer Manager (still 100% offline-safe!)
+          const existingCust = cloudCustomers.find((c) => c.hwid === item.hwid);
+          saveCloudPolicy({
+            hwid: item.hwid,
+            note: item.note || (existingCust ? existingCust.note : ''),
+            status: 'active',
+            tier: item.tier,
+            expires_at: defaultExpiryForTier(item.tier),
+            reason: '',
+            prev_rev: existingCust ? Number(existingCust.rev || 0) : 0
+          }).then((saved) => {
+            if (saved) {
+              const idx = cloudCustomers.findIndex((x) => x.hwid === saved.hwid);
+              if (idx >= 0) cloudCustomers[idx] = saved;
+              else cloudCustomers.unshift(saved);
+              $('custTabBadge').textContent = '(' + cloudCustomers.length + ')';
+            }
+          }).catch(() => {});
         } catch (e) {
           showToast('❌ Lỗi tạo Key: ' + e.message);
         }
